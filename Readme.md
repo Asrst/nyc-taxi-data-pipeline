@@ -1,24 +1,34 @@
 
 ## nyc-taxi-data-pipeline
 
+pre-req: Install Requirements using requirements.txt
+
 1. Run the following command to start postgres server & pg admin (requires docker & docker-compose).
     
     `docker-compose up`
 
 
-2. Open the terminal and run below scripts to download and ingest data to local postgress instance.
+2. Follow the below steps to setup secrets on prefect Orion.
+
+    - `prefect orion start`
+    
+    -  In the Orion UI, Add SQLAlchemy Connector block & provide postgress connection url (required only on first start).
+
+    
+3. Run the below commands to run prefect flow to download and ingest data to local postgress instance.
+
+    `cd prefect/flows`
 
     ```python
     
-    python3 ingest_data.py --user root --password root --host 0.0.0.0 --port 5432 --db ny_taxi --table_name yellow_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2020-01.csv.gz
+    python3 web_to_pg.py --table_name yellow_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2020-01.csv.gz
 
-    python3 ingest_data.py --user root --password root --host 0.0.0.0 --port 5432 --db ny_taxi --table_name green_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz
+    python3 web_to_pg.py --table_name green_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz
 
-    python3 ingest_data.py --user root --password root --host 0.0.0.0 --port 5432 --db ny_taxi --table_name taxi_zones --url https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
+    python3 web_to_pg.py --table_name taxi_zones --url https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
     ```
 
-
-3. Run the queries in pg-admin to query the data.
+4. Run the queries in pg-admin to query the data (use `pgdatabase` as host for connection).
 
     ```sql
 
