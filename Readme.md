@@ -1,9 +1,24 @@
 
 ## nyc-taxi-data-pipeline
 
-pre-req: Install Requirements using requirements.txt
+**prerequisites**: 
+- Install Requirements using requirements.txt 
+- GCP Account & Terraform (for cloud workflows)
+- Make sure Docker is installed & Logged in to the Docker CLI using `docker login`
 
-1. Run the following command to start postgres server & pg admin (requires docker & docker-compose).
+
+### steps for cloud workflow
+
+1. Run terraform to create/update GCp infra (refer `/terraform`).
+2. Run the flows in the `prefect/flows` to test & Deploy them by creating a docker image (refer `/prefect`). 
+
+
+
+### steps for local workflow
+
+(only `flows/web_to_pg.py` is based on local postgress)
+
+1. Run the following command to start postgres server & pg admin .
     
     `docker-compose up`
 
@@ -17,15 +32,13 @@ pre-req: Install Requirements using requirements.txt
     
 3. Run the below commands to run prefect flow to download and ingest data to local postgress instance.
 
-    `cd prefect/flows`
 
     ```python
     
-    python3 web_to_pg.py --table_name yellow_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2020-01.csv.gz
+    python3 prefect/flows/web_to_pg.py --table_name yellow_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2020-01.csv.gz
 
-    python3 web_to_pg.py --table_name green_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz
 
-    python3 web_to_pg.py --table_name taxi_zones --url https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
+    python3 prefect/flows/web_to_pg.py --table_name taxi_zones --url https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
     ```
 
 4. Run the queries in pg-admin to query the data (use `pgdatabase` as host for connection).

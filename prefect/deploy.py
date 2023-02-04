@@ -4,7 +4,7 @@ from flows.web_to_gcs import etl_web_to_gcs
 
 # alternative to creating DockerContainer block in the UI
 docker_block = DockerContainer(
-    image="asrst/prefect:etl_web_to_gcs",  # insert your image here
+    image="asrst/nyc-taxi-prefect-etl:v1",  # insert your image here
     image_pull_policy="ALWAYS",
     network_mode="bridge",
     auto_remove=True,
