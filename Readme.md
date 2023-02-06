@@ -16,7 +16,7 @@
 
 ### steps for local workflow
 
-(only `flows/web_to_pg.py` is based on local postgress)
+(only `flows/web_to_pg.py` is a local workflow - reads data from web and writes to a local postgress db)
 
 1. Run the following command to start postgres server & pg admin .
     

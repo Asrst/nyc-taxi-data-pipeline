@@ -1,8 +1,16 @@
 
 
+
+## etl using prefect
+
+- `web_to_gcs.py` reads the csv data from web using pandas and directly writes it into google cloud storage in parquet format.
+
+- `gcs_to_bq.py` reads the data from google cloud storage, transforms data and creates a table in biq query.
+
+
 ### Details steps for running prefect cloud workflow:
 
-(only web_to_gcs.py & gcs_to_bq.py are based on GCP. Make sure GCS bucket & Biquery Dataset are created)
+(only `web_to_gcs.py` & `gcs_to_bq.py` are based on GCP. Make sure GCS bucket & Biquery Dataset are created)
 
 1. `prefect orion start`
 
