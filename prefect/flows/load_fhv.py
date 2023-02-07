@@ -40,9 +40,9 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @task()
-def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
+def write_local(df: pd.DataFrame, save_path) -> Path:
     """Write DataFrame out locally as parquet file"""
-    path = Path(f"data/{color}/{dataset_file}.parquet")
+    path = Path(f"data/{save_path}")
     df.to_parquet(path, compression="gzip")
     return path
 
@@ -56,19 +56,29 @@ def write_gcs(df, save_path) -> None:
 
 
     gcs_block = GcsBucket.load("nyc-taxi-data-lake")
-    buffer = io.BytesIO(df.to_parquet(compression="gzip"))
+
+    if save_path.endswith("csv.gz"):
+        buffer = io.BytesIO()
+        out = df.to_csv(buffer, index=False, compression="gzip")
+        buffer.seek(0)
+    elif save_path.endswith(".parquet"):
+        out = df.to_parquet(compression="gzip")
+        buffer = io.BytesIO(out)
+
     gcs_block.upload_from_file_object(buffer, to_path=save_path)
 
     return
 
 
 @flow()
-def etl_web_to_gcs(color:str='green', year:int=2020, months:list=[5]) -> None:
+def load_fhv_to_gcs(year:int=2020, months:list=[5]) -> None:
     """The main ETL function"""
 
+    total_records = 0
+
     for month in months:
-        dataset_fn = f"{color}_tripdata_{year}-{month:02}"
-        dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_fn}.csv.gz"
+        dataset_fn = f"fhv_tripdata_{year}-{month:02}"
+        dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/fhv/{dataset_fn}.csv.gz"
 
         df = fetch(dataset_url)
         df_clean = transform(df)
@@ -76,13 +86,17 @@ def etl_web_to_gcs(color:str='green', year:int=2020, months:list=[5]) -> None:
         # skipping this step
         # path = write_local(df_clean, color, dataset_file)
 
-        bucket_path = f"{color}/{dataset_fn}.parquet"
+        bucket_path = f"fhv/{dataset_fn}.csv.gz"
         write_gcs(df_clean, bucket_path)
+        total_records += len(df_clean)
+
+    print(f"Processes Total of {total_records} records & Saved to GCS.")
+
+
 
 
 if __name__ == "__main__":
-    color = "green"
     year = 2019
-    month = [4]
-    etl_web_to_gcs(color, year, month)
+    months = list(range(1,13))
+    load_fhv_to_gcs(year, months)
 

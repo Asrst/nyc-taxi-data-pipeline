@@ -3,14 +3,12 @@
 
 ## etl using prefect
 
-- `web_to_gcs.py` reads the csv data from web using pandas and directly writes it into google cloud storage in parquet format.
-
-- `gcs_to_bq.py` reads the data from google cloud storage, transforms data and creates a table in biq query.
+- `load_fhv.py` reads the csv NY Taxi's for Hire Vehicle's (FHV) data from web using pandas and directly writes it into google cloud storage in compressed gz format (total of 43,244,696 records for 2019).
 
 
 ### Details steps for running prefect cloud workflow:
 
-(only `web_to_gcs.py` & `gcs_to_bq.py` are based on GCP. Make sure GCS bucket & Biquery Dataset are created)
+(This flow is based on GCP. Make sure GCS bucket is created)
 
 1. `prefect orion start`
 
@@ -28,7 +26,7 @@
 
 8. `prefect deploy.py` deploys the flow & will be visible in orion UI.
 
-9. `prefect deployment run etl-web-to-gcs/docker-flow` runs the flow & you can see a job in waiting stage in UI.
+9. `prefect deployment run load-fhv-to-gcs/docker-flow` runs the flow & you can see a job in waiting stage in UI.
 
 10. `prefect agent start -q default` creates a agent or worker which poles the queue and executes the jobs.
 

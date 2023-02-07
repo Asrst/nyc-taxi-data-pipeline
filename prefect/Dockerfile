@@ -8,3 +8,4 @@ COPY flows /opt/prefect/flows
 
 RUN mkdir -p /opt/prefect/data/yellow
 RUN mkdir -p /opt/prefect/data/green
+RUN mkdir -p /opt/prefect/data/fhv
