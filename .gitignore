@@ -198,3 +198,8 @@ terraform.rc
 # ignore csv and csv.gz
 *.csv
 *.csv.gz
+
+# dbt project logs
+target/
+dbt_packages/
+logs/
