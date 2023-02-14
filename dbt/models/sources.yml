@@ -1,0 +1,9 @@
+version: 2
+sources:
+  - name: bq_ny_taxi
+    database: nyc-taxi-data-pipeline-250123
+    schema: nyc_taxi_trips
+    tables:
+      - name: fhv_tripdata_opt
+      - name: green
+      - name: yellow

@@ -1,0 +1,10 @@
+
+version: 2
+
+models:
+    - name: stg_fhv_tripdata
+      description: "A starter dbt model"
+      columns:
+          - name: pickup_datetime
+            description: "pick up time for the trip"
+            tests:
