@@ -3,7 +3,7 @@
 with tripdata as 
 (
   select *,
-    row_number() over(partition by vendorid, lpep_pickup_datetime) as rn
+    row_number() over(partition by cast(vendorid as integer), lpep_pickup_datetime) as rn
   from {{ source('bq_ny_taxi','temp_green_taxi') }}
   where vendorid is not null 
 )
