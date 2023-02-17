@@ -4,6 +4,6 @@ sources:
     database: nyc-taxi-data-pipeline-250123
     schema: nyc_taxi_trips
     tables:
-      - name: fhv_tripdata_opt
-      - name: green
-      - name: yellow
+      - name: temp_fhv_trips
+      - name: temp_green_taxi
+      - name: temp_yellow_taxi
