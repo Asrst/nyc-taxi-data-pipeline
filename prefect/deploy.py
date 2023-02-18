@@ -1,6 +1,6 @@
 from prefect.infrastructure.docker import DockerContainer
 from prefect.deployments import Deployment
-from flows.load_fhv import load_fhv_to_gcs
+from nyc_taxi_data_pipeline.prefect.flows.load_trips_data import load_trips_data
 
 # alternative to creating DockerContainer block in the UI
 docker_block = DockerContainer(
@@ -15,7 +15,7 @@ docker_block.save("nyc-taxi-etl", overwrite=True)
 # docker_block = DockerContainer.load("nyc-taxi-etl")
 
 docker_dep = Deployment.build_from_flow(
-    flow=load_fhv_to_gcs,
+    flow=load_trips_data,
     name="docker-flow",
     infrastructure=docker_block,
 )
