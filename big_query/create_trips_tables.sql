@@ -2,8 +2,8 @@
 --- yellow taxi data
 CREATE OR REPLACE EXTERNAL TABLE `nyc_taxi_trips.temp_yellow_taxi`
 OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://nyc_taxi_data_lake_250123/yellow/yellow_tripdata_*.parquet']
+  format = 'CSV',
+  uris = ['gs://nyc_taxi_data_lake_250123/yellow/yellow_tripdata_*.csv.gz']
 );
 
 -- CREATE OR REPLACE TABLE `nyc_taxi_trips.yellow_taxi`
@@ -14,8 +14,8 @@ OPTIONS (
 --- green taxi data
 CREATE OR REPLACE EXTERNAL TABLE `nyc_taxi_trips.temp_green_taxi`
 OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://nyc_taxi_data_lake_250123/green/green_tripdata_*.parquet']
+  format = 'CSV',
+  uris = ['gs://nyc_taxi_data_lake_250123/green/green_tripdata_*.csv.gz']
 );
 
 -- CREATE OR REPLACE TABLE `nyc_taxi_trips.green_taxi`
